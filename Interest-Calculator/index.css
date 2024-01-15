@@ -1,3 +1,7 @@
+body{
+    background-color: #756AB6;
+}
+
 .container{
     display: flex;
     justify-content: space-evenly;
@@ -11,13 +15,34 @@
     text-align: center;
     padding-top: 30px;
     padding-bottom: 100px;
+    color: #FFE5E5;
 }
 
 .button{
     text-align: center;
+    padding-top: 30px;
+    padding-bottom: 30px;
 }
 
 button{
     height: 50px;
     width: 100px;
+    background-color: #AC87C5;
+    color: #FFE5E5;
+    border: 2px solid #E0AED0;
+    border-radius: 20px;
+}
+
+input{
+    height: 50px;
+    width: 200px;
+    background-color: #AC87C5;
+    color: #FFE5E5;
+    border: 2px solid #E0AED0;
+    border-radius: 10px;
+    text-align: center;
+}
+
+::placeholder{
+    color: #FFE5E5;
 }
