@@ -1,10 +1,34 @@
 body{
     background-color: #756AB6;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .container{
     display: flex;
     justify-content: space-evenly;
+}
+
+.ansContainer{
+    display: flex;
+    justify-content: space-evenly;
+    padding-top: 80px;
+}
+
+.ansLabelContainer{
+    display: flex;
+    justify-content: space-evenly;
+    padding-top: 10px;
+}
+
+.Final{
+    background-color: #AC87C5;
+    color: #FFE5E5;
+    border: 2px solid #E0AED0;
+    padding: 20px;
+}
+
+.label{
+    color: #FFE5E5;
 }
 
 .child{
@@ -14,8 +38,12 @@ body{
 .header{
     text-align: center;
     padding-top: 30px;
-    padding-bottom: 100px;
+    padding-bottom: 30px;
+    margin-bottom: 100px;
     color: #FFE5E5;
+    background-color: #AC87C5;
+    border: 2px solid #E0AED0;
+    border-radius: 20px;
 }
 
 .button{
@@ -45,4 +73,8 @@ input{
 
 ::placeholder{
     color: #FFE5E5;
+}
+
+#ans{
+    margin-right: 8px;
 }
