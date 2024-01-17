@@ -34,4 +34,24 @@ app.get("/fetchAdmins",authenticateAdmin,async function(req,res){
     res.send(response)
 })
 
+app.post("/changePassword",authenticateAdmin,async function(req,res){
+    const username = req.headers.username
+    const newPassword = req.body.newPassword
+    try{
+        await Admin.updateOne({
+            username : username
+        },{
+            password : newPassword
+        })
+        res.json({
+            msg : "Password changed successfully"
+        })
+    }
+    catch(err){
+        res.json({
+            msg : "Error changing password"
+        })
+    }
+})
+
 app.listen(3000)
