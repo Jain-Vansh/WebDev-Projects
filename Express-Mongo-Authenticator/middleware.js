@@ -1,11 +1,12 @@
 const {Admin} = require("./database")
+const jwt = require("jsonwebtoken")
+const jwtPassword = "hehe"
 
 async function authenticateAdmin(req,res,next){
-    const username = req.headers.username
-    const password = req.headers.password
+    const token = req.headers.authorization
+    const data = jwt.verify(token,jwtPassword)
     const check = await Admin.findOne({
-        username : username,
-        password : password
+        username : data.username,
     })
     if(check){
         next()

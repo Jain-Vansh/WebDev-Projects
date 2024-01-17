@@ -1,6 +1,8 @@
 const {Admin} = require("./database.js")
 const authenticateAdmin = require("./middleware.js")
 const express = require("express")
+const jwt = require("jsonwebtoken")
+const jwtPassword = "hehe"
 
 const app = express()
 app.use(express.json())
@@ -18,9 +20,14 @@ app.post("/signup",async function(req,res){
         })
     }
     else{
+        const token = jwt.sign({
+            username : username,
+        },jwtPassword)
+
         await Admin.create({
             username : username,
-            password : password
+            password : password,
+            token : token
         })
         res.json({
             msg : "Admin Created Successfully"
@@ -35,10 +42,10 @@ app.get("/fetchAdmins",authenticateAdmin,async function(req,res){
 })
 
 app.post("/changePassword",authenticateAdmin,async function(req,res){
-    const username = req.headers.username
+    const token = req.headers.authorization
     const newPassword = req.body.newPassword
         await Admin.updateOne({
-            username : username
+            token : token
         },{
             password : newPassword
         })
@@ -48,9 +55,9 @@ app.post("/changePassword",authenticateAdmin,async function(req,res){
 })
 
 app.post("/deleteAdmin",authenticateAdmin,async function(req,res){
-    const username = req.headers.username
+    const token = req.headers.authorization
     await Admin.deleteOne({
-        username : username
+        token : token
     })
     res.json({
         msg : "Admin deleted successfully"
