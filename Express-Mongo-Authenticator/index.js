@@ -1,9 +1,20 @@
+const {Admin} = require("./database.js")
 const express = require("express")
-const mongoose = require("mongoose")
 
 const app = express()
 app.use(express.json())
 
-
+app.post("/signup",function(req,res){
+    const username = req.body.username
+    const password = req.body.password
+    const newAdmin = new Admin({
+        username : username,
+        password : password
+    })
+    newAdmin.save()
+    res.json({
+        msg : "Admin Created Successfully"
+    })
+})
 
 app.listen(3000)
