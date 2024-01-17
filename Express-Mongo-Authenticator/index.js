@@ -1,4 +1,5 @@
 const {Admin} = require("./database.js")
+const authenticateAdmin = require("./middleware.js")
 const express = require("express")
 
 const app = express()
@@ -26,7 +27,11 @@ app.post("/signup",async function(req,res){
         })
     }
     
-    
+})
+
+app.get("/fetchAdmins",authenticateAdmin,async function(req,res){
+    const response = await Admin.find()
+    res.send(response)
 })
 
 app.listen(3000)
