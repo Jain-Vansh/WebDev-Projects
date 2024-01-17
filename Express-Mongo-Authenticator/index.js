@@ -37,7 +37,6 @@ app.get("/fetchAdmins",authenticateAdmin,async function(req,res){
 app.post("/changePassword",authenticateAdmin,async function(req,res){
     const username = req.headers.username
     const newPassword = req.body.newPassword
-    try{
         await Admin.updateOne({
             username : username
         },{
@@ -46,12 +45,16 @@ app.post("/changePassword",authenticateAdmin,async function(req,res){
         res.json({
             msg : "Password changed successfully"
         })
-    }
-    catch(err){
-        res.json({
-            msg : "Error changing password"
-        })
-    }
+})
+
+app.post("/deleteAdmin",authenticateAdmin,async function(req,res){
+    const username = req.headers.username
+    await Admin.deleteOne({
+        username : username
+    })
+    res.json({
+        msg : "Admin deleted successfully"
+    })
 })
 
 app.listen(3000)
