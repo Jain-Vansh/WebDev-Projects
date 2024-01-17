@@ -7,13 +7,13 @@ app.use(express.json())
 app.post("/signup",function(req,res){
     const username = req.body.username
     const password = req.body.password
-    const newAdmin = new Admin({
+    Admin.create({
         username : username,
         password : password
-    })
-    newAdmin.save()
-    res.json({
-        msg : "Admin Created Successfully"
+    }).then(function(){
+        res.json({
+            msg : "Admin Created Successfully"
+        })
     })
 })
 

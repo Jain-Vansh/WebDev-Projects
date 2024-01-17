@@ -3,9 +3,11 @@ const { stringify } = require("querystring")
 
 mongoose.connect("mongodb+srv://vansh:1234@cluster1.k821jap.mongodb.net/project")
 
-const Admin = mongoose.model("Admin",{
+const adminSchema = new mongoose.Schema({
     username : String,
     password : String
 })
 
-module.exports = Admin
+const Admin = mongoose.model("Admin", adminSchema)
+
+module.exports = {Admin}
