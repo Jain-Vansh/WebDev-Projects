@@ -1,6 +1,6 @@
 const express = require("express")
 const {createTodo, updateTodo} = require("./types")
-const {Todo} = require("./db")
+const {Todo} = require("./db.js")
 
 const app = express()
 app.use(express.json())
@@ -46,7 +46,7 @@ app.put("/done", async function(req,res){
         return
     }
 
-    await Todo.update({
+    await Todo.updateOne({
         _id : req.body.id
     },{
         completed : true

@@ -1,5 +1,5 @@
 // Using the zod library for data verification of the todos
-const zod = reqiure("zod")
+const zod = require("zod")
 
 const createTodo = zod.object({
     title : zod.string(),
