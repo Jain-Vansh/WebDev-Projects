@@ -3,6 +3,7 @@ const mongoose = require("mongoose")
 mongoose.connect("")
 
 const userSchema = new mongoose.Schema({
+    token : String,
     firstName : String,
     lastName : String,
     age : Number,
