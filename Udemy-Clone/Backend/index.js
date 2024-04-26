@@ -1,6 +1,7 @@
 const express = require("express")
 const jwt = require("jsonwebtoken")
 const {Users, Courses, Admin} = require("./database")
+const {tokenCheckAdmin, tokenCheckUser} = require("./middleware")
 
 const secret = "ghf6758irf"
 const app = express()
@@ -15,10 +16,11 @@ app.get("/users", async function(req,res){
 })
 
 app.post("/adminLogin", async function(req,res){
-    const data = req.body
+    const username = req.body.username
+    const password = req.body.password
     const check = await Admin.findOne({
-        username : data.username,
-        password : data.password
+        username : username,
+        password : password
     })
 
     if(check){
@@ -33,22 +35,24 @@ app.post("/adminLogin", async function(req,res){
     }
 })
 
-app.post("/addCourse", async function(req,res){
-    const data = req.body
+app.post("/addCourse", tokenCheckAdmin, async function(req,res){
+    const title = req.body.title
+    const description = req.body.description
+    const price = req.body.price
     await Courses.create({
-        title : data.title,
-        description : data.description,
-        price : data.price
+        title : title,
+        description : description,
+        price : price
     })
     res.json({
         msg : "Course added"
     })
 })
 
-app.delete("/removeCourse", async function(req,res){
-    const data = req.body
+app.delete("/removeCourse", tokenCheckAdmin, async function(req,res){
+    const title = req.body.title
     await Courses.deleteOne({
-        title : data.title
+        title : title
     })
     res.json({
         msg : "Course deleted"
@@ -57,9 +61,10 @@ app.delete("/removeCourse", async function(req,res){
 
 // User Routes
 app.post("/signUp",async function(req,res){
-    const data = req.body
+    const username = req.body.username
+    const password = req.body.password
     const check = await Users.findOne({
-        username : data.username
+        username : username
     })
 
     if(check){
@@ -69,14 +74,14 @@ app.post("/signUp",async function(req,res){
     }
     else{
         token = jwt.sign({
-            username : data.username,
-            password : data.password
+            username : username,
+            password : password
         },secret)
 
         await Users.create({
             token : token,
-            username : data.username,
-            password : data.password
+            username : username,
+            password : password
         })
         res.json({
             msg : "User Created Successfully!"
@@ -86,48 +91,49 @@ app.post("/signUp",async function(req,res){
 })
 
 app.post("/login", async function(req,res){
-    const data = req.body
+    const username = req.body.username
+    const password = req.body.password
     const check = Users.findOne({
-        username : data.username,
-        password : data.password
+        username : username,
+        password : password
     });
 
     if(check){
-        res.json({
+        res.status(200).json({
             msg : "Successfully logged in"
         })
     }
     else{
-        res.json({
+        res.status(401).json({
             msg : "Invalid credentials"
         })
     }
 })
 
-app.get("/home", async function(req,res){
+app.get("/home", tokenCheckUser, async function(req,res){
     const data = await Courses.find()
     res.json({
         msg : data
     })
 })
 
-app.put("/buy", async function(req,res){
-    const data = req.body
+app.put("/buy", tokenCheckUser, async function(req,res){
+    const title = req.body.title
     const auth = req.headers.authorization
     const result = await Courses.findOne({
-        title : data.title
+        title : title
     })
     await Users.updateOne({
         token : auth
     },{
         purchased : result._id
     })
-    res.json({
+    res.status(200).json({
         msg : "Course Purchased Successfully"
     })
 })
 
-app.get("/myCourses", async function(req,res){
+app.get("/myCourses", tokenCheckUser, async function(req,res){
     const auth = req.headers.authorization
     const result = await Users.find({
         token : auth
