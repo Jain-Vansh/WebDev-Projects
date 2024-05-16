@@ -1,4 +1,5 @@
 const express = require("express")
+const cors = require("cors")
 const jwt = require("jsonwebtoken")
 const {Users, Courses, Admin} = require("./database")
 const {tokenCheckAdmin, tokenCheckUser} = require("./middleware")
@@ -6,6 +7,7 @@ const {tokenCheckAdmin, tokenCheckUser} = require("./middleware")
 const secret = "ghf6758irf"
 const app = express()
 app.use(express.json())
+app.use(cors())
 
 // Admin Routes
 app.get("/users", async function(req,res){
@@ -24,12 +26,12 @@ app.post("/adminLogin", async function(req,res){
     })
 
     if(check){
-        res.json({
+        res.status(200).json({
             msg : "Admin log in successful"
         })
     }
     else{
-        res.json({
+        res.status(401).json({
             msg : "Invalid Admin credentials"
         })
     }
