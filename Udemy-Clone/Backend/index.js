@@ -12,9 +12,17 @@ app.use(cors())
 // Admin Routes
 app.get("/users", async function(req,res){
     const result = await Users.find()
-    res.json({
-        msg : result
-    })
+    if(result){
+        res.status(200).json({
+            msg : result
+        })
+    }
+    else{
+        res.status(400).json({
+            msg : "ERROR"
+        })
+    }
+    
 })
 
 app.post("/adminLogin", async function(req,res){
@@ -27,7 +35,7 @@ app.post("/adminLogin", async function(req,res){
 
     if(check){
         res.status(200).json({
-            msg : "Admin log in successful"
+            msg : check.token
         })
     }
     else{
@@ -38,27 +46,47 @@ app.post("/adminLogin", async function(req,res){
 })
 
 app.post("/addCourse", tokenCheckAdmin, async function(req,res){
+    const cid = req.body.cid
     const title = req.body.title
     const description = req.body.description
     const price = req.body.price
-    await Courses.create({
-        title : title,
-        description : description,
-        price : price
-    })
-    res.json({
-        msg : "Course added"
-    })
+    if(title == "" || description == "" || price == ""){
+        res.status(400).json({
+            msg : "ERROR! Empty Fields"
+        })
+    }
+    else{
+        await Courses.create({
+            cid : cid,
+            title : title,
+            description : description,
+            price : price
+        })
+        res.status(200).json({
+            msg : "Course added"
+        })
+    }
 })
 
-app.delete("/removeCourse", tokenCheckAdmin, async function(req,res){
-    const title = req.body.title
-    await Courses.deleteOne({
-        title : title
+app.delete("/removeCourse", async function(req,res){
+    const cid = req.body.cid
+    // const check = await Courses.findOne({
+    //     _id : _id
+    // })
+    const check = await Courses.deleteOne({
+        cid : cid
     })
-    res.json({
-        msg : "Course deleted"
-    })
+    if(check){
+        res.status(200).json({
+            msg : "Course deleted"
+        })
+    }
+    else{
+        res.status(400).json({
+            msg : "ERROR!"
+        })
+    }
+    
 })
 
 // User Routes
@@ -112,7 +140,7 @@ app.post("/login", async function(req,res){
     }
 })
 
-app.get("/home", tokenCheckUser, async function(req,res){
+app.get("/home", async function(req,res){
     const data = await Courses.find()
     res.json({
         msg : data

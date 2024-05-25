@@ -1,7 +1,7 @@
 const {Users, Admin} = require("./database")
 
 async function tokenCheckAdmin(req,res,next){
-    const token = req.headers.authentication
+    const token = req.headers.authorization
     const check = await Admin.findOne({
         token : token
     })

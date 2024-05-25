@@ -4,6 +4,7 @@ mongoose.connect("mongodb+srv://vansh:1234@cluster1.k821jap.mongodb.net/Udemy")
 
 const UserSchema = new mongoose.Schema({
     token : String,
+    fullname : String,
     username : String,
     password : String,
     purchased : [{
@@ -19,6 +20,7 @@ const AdminSchema = new mongoose.Schema({
 })
 
 const CourseSchema = new mongoose.Schema({
+    cid : Number,
     title : String,
     description : String,
     price : Number

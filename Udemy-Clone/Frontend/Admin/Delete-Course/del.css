@@ -15,6 +15,24 @@ body{
     border-bottom-left-radius: 5px;
 }
 
+a{
+    margin: 1%;
+    color: #F5F5F5;
+    font-size: medium;
+    float: left;
+    text-decoration: none;
+}
+
+a:hover{
+    color: #F99417;
+    transform: scale(1.1);
+    transition: 0.5s ease;
+}
+
+span{
+    margin-right: 120px;
+}
+
 #container{
     margin-top: 3%;
     display: flex;
